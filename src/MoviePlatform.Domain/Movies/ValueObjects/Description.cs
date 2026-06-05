@@ -13,11 +13,6 @@ public readonly record struct Description
 	{
 		value = value?.Trim();
 
-		if (value?.Length < MovieConstants.Description.MinLength)
-		{
-			return Result.Failure<Description>(MovieErrors.Description.TooShort);
-		}
-
 		if (value?.Length > MovieConstants.Description.MaxLength)
 		{
 			return Result.Failure<Description>(MovieErrors.Description.TooLong);
