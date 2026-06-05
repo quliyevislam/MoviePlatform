@@ -12,6 +12,24 @@ public static class MovieErrors
 		);
 	}
 
+	public static class Title
+	{
+		public static readonly Error Required = Error.Validation(
+			"Movie.Title.Required",
+			"The movie title is required."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"Movie.Title.Empty",
+			"The movie title cannot be empty."
+		);
+
+		public static readonly Error TooLong = Error.Validation(
+			"Movie.Title.TooLong",
+			$"The movie title cannot exceed {MovieConstants.Title.MaxLength} characters."
+		);
+	}
+
 	public static class Description
 	{
 		public static readonly Error TooLong = Error.Validation(
