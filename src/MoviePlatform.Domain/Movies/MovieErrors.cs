@@ -8,7 +8,7 @@ public static class MovieErrors
 	{
 		public static readonly Error Invalid = Error.Validation(
 			"Movie.MovieId.Invalid",
-			"The provided movie id is invalid."
+			"The movie id is invalid."
 		);
 	}
 
@@ -58,7 +58,7 @@ public static class MovieErrors
 	{
 		public static readonly Error Invalid = Error.Validation(
 			"Movie.ReviewId.Invalid",
-			"The provided review id is invalid."
+			"The review id is invalid."
 		);
 	}
 
@@ -67,6 +67,14 @@ public static class MovieErrors
 		public static readonly Error OutOfRange = Error.Validation(
 			"Movie.ReviewScore.OutOfRange",
 			$"The review score must be between {MovieConstants.ReviewScore.MinScore} and {MovieConstants.ReviewScore.MaxScore}."
+		);
+	}
+
+	public static class CommentId
+	{
+		public static readonly Error Invalid = Error.Validation(
+			"Movie.CommentId.Invalid",
+			"The comment id is invalid."
 		);
 	}
 

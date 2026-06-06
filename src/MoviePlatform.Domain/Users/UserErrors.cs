@@ -8,7 +8,7 @@ public static class UserErrors
 	{
 		public static readonly Error Invalid = Error.Validation(
 			"User.UserId.Invalid",
-			"The provided user id is invalid."
+			"The user id is invalid."
 		);
 	}
 }
