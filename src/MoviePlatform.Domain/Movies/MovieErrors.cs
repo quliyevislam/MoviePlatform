@@ -37,4 +37,12 @@ public static class MovieErrors
 			$"The movie description cannot exceed {MovieConstants.Description.MaxLength} characters."
 		);
 	}
+
+	public static class ReleaseDate
+	{
+		public static readonly Error InFuture = Error.Validation(
+			"Movie.ReleaseDate.InFuture",
+			"The movie release date cannot be in the future."
+		);
+	}
 }
