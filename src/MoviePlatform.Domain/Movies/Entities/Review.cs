@@ -14,27 +14,19 @@ public sealed class Review : BaseEntity<ReviewId>
 	{
 	}
 
-	private Review(UserId userId, MovieId movieId, ReviewScore score)
+	private Review(UserId userId, ReviewScore score)
 	{
 		UserId = userId;
-		MovieId = movieId;
 		Score = score;
 	}
 
-	public static Result<Review> Create(int userId, int movieId, float score)
+	public static Result<Review> Create(int userId, float score)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
 
 		if (userIdResult.IsFailure)
 		{
 			return Result.Failure<Review>(userIdResult.Error);
-		}
-
-		Result<MovieId> movieIdResult = MovieId.Create(movieId);
-
-		if (movieIdResult.IsFailure)
-		{
-			return Result.Failure<Review>(movieIdResult.Error);
 		}
 
 		Result<ReviewScore>	scoreResult = ReviewScore.Create(score);
@@ -44,6 +36,6 @@ public sealed class Review : BaseEntity<ReviewId>
 			return Result.Failure<Review>(scoreResult.Error);
 		}
 
-		return Result.Success<Review>(new(userIdResult.Value, movieIdResult.Value, scoreResult.Value));
+		return Result.Success<Review>(new(userIdResult.Value, scoreResult.Value));
 	}
 }
