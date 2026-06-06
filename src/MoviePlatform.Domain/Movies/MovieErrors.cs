@@ -54,6 +54,14 @@ public static class MovieErrors
 		);
 	}
 
+	public static class ReviewId
+	{
+		public static readonly Error Invalid = Error.Validation(
+			"Movie.ReviewId.Invalid",
+			"The provided review id is invalid."
+		);
+	}
+
 	public static class ReviewScore
 	{
 		public static readonly Error OutOfRange = Error.Validation(
