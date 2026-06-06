@@ -45,4 +45,12 @@ public static class MovieErrors
 			"The movie release date cannot be in the future."
 		);
 	}
+
+	public static class ReviewScore
+	{
+		public static readonly Error OutOfRange = Error.Validation(
+			"Movie.ReviewScore.OutOfRange",
+			$"The review score must be between {MovieConstants.ReviewScore.MinScore} and {MovieConstants.ReviewScore.MaxScore}."
+		);
+	}
 }
