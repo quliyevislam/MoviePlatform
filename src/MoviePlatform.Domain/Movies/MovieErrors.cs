@@ -61,4 +61,22 @@ public static class MovieErrors
 			$"The review score must be between {MovieConstants.ReviewScore.MinScore} and {MovieConstants.ReviewScore.MaxScore}."
 		);
 	}
+
+	public static class CommentContent
+	{
+		public static readonly Error Required = Error.Validation(
+			"Movie.CommentContent.Required",
+			"The comment content is rquired."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"Movie.CommentContent.Empty",
+			"The comment content cannot be empty."
+		);
+
+		public static readonly Error TooLong = Error.Validation(
+			"Movie.CommentContent.TooLong",
+			$"The comment content cannot exceed {MovieConstants.CommentContent.MaxLength} characters."
+		);
+	}
 }

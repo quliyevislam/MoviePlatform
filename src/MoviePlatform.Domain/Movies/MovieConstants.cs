@@ -17,4 +17,9 @@ public static class MovieConstants
 		public static readonly float MinScore = 1.0F;
 		public static readonly float MaxScore = 10.0F;
 	}
+
+	public static class CommentContent
+	{
+		public static readonly int MaxLength = 500;
+	}
 }
