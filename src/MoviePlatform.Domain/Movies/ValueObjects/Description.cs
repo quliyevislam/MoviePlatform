@@ -11,13 +11,13 @@ public readonly record struct Description
 
 	public static Result<Description> Create(string? value)
 	{
-		value = value?.Trim();
+		string? trimmedValue = value?.Trim();
 
-		if (value?.Length > MovieConstants.Description.MaxLength)
+		if (trimmedValue?.Length > MovieConstants.Description.MaxLength)
 		{
 			return Result.Failure<Description>(MovieErrors.Description.TooLong);
 		}
 
-		return Result.Success<Description>(new(value));
+		return Result.Success<Description>(new(trimmedValue));
 	}
 }
