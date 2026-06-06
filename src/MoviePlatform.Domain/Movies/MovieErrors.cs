@@ -46,6 +46,14 @@ public static class MovieErrors
 		);
 	}
 
+	public static class AverageRating
+	{
+		public static readonly Error OutOfRange = Error.Validation(
+			"Movie.AverageRating.OutOfRange",
+			$"The average rating must be between {MovieConstants.ReviewScore.MinScore} and {MovieConstants.ReviewScore.MaxScore}."
+		);
+	}
+
 	public static class ReviewScore
 	{
 		public static readonly Error OutOfRange = Error.Validation(
