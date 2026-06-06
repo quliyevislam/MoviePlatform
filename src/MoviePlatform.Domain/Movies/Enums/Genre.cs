@@ -1,4 +1,4 @@
-namespace MoviePlatform.Domain.Movies.Enums:
+namespace MoviePlatform.Domain.Movies.Enums;
 
 public enum Genre
 {
