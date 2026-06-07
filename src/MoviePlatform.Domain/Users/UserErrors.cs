@@ -11,4 +11,22 @@ public static class UserErrors
 			"The user id is invalid."
 		);
 	}
+
+	public static class Name
+	{
+		public static readonly Error Required = Error.Validation(
+			"User.Name.Required",
+			"The user name is required."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"User.Name.Empty",
+			"The user name cannot be empty."
+		);
+
+		public static readonly Error TooLong = Error.Validation(
+			"User.Name.TooLong",
+			$"The user name cannot exceed {UserConstants.Name.MaxLength} characters."
+		);
+	}
 }
