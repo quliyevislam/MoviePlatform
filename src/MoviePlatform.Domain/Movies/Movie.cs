@@ -36,82 +36,33 @@ public sealed class Movie : AggregateRoot<MovieId>
 		AverageRating = new AverageRating();
 	}
 
-	public static Result<Movie> Create(int userId, string title, string description, Genre genre, DateOnly releaseDate, DateTime currentUtcTime)
+	public static Movie Create(UserId userId, Title title, Description description, Genre genre, ReleaseDate releaseDate)
 	{
-		Result<UserId> userIdResult = UserId.Create(userId);
-
-		if (userIdResult.IsFailure)
-		{
-			return Result.Failure<Movie>(userIdResult.Error);
-		}
-
-		Result<Title> titleResult = Title.Create(title);
-
-		if (titleResult.IsFailure)
-		{
-			return Result.Failure<Movie>(titleResult.Error);
-		}
-
-		Result<Description> descriptionResult = Description.Create(description);
-
-		if (descriptionResult.IsFailure)
-		{
-			return Result.Failure<Movie>(descriptionResult.Error);
-		}
-
-		Result<ReleaseDate> releaseDateResult = ReleaseDate.Create(releaseDate, currentUtcTime);
-
-		if (releaseDateResult.IsFailure)
-		{
-			return Result.Failure<Movie>(releaseDateResult.Error);
-		}
-
-		return Result.Success<Movie>(new(userIdResult.Value, titleResult.Value, descriptionResult.Value, genre, releaseDateResult.Value));
+		return new(userId, title, description, genre, releaseDate);
 	}
 
-	public Result SubmitReview(int userId, float score)
+	public void SubmitReview(UserId userId, ReviewScore score)
 	{
-		Review? existingReview = _reviews.FirstOrDefault(review => review.UserId.Value == userId);
+		Review? existingReview = _reviews.FirstOrDefault(review => review.UserId == userId);
 
 		if (existingReview is null)
 		{
-			Result<Review> reviewResult = Review.Create(userId, score);
+			Review newReview = Review.Create(userId, score);
 
-			if (reviewResult.IsFailure)
-			{
-				return Result.Failure(reviewResult.Error);
-			}
-
-			_reviews.Add(reviewResult.Value);
+			_reviews.Add(newReview);
 		}
 		else
 		{
-			Result<ReviewScore> reviewScoreResult = ReviewScore.Create(score);
-
-			if (reviewScoreResult.IsFailure)
-			{
-				return Result.Failure(reviewScoreResult.Error);
-			}
-
-			existingReview.UpdateScore(reviewScoreResult.Value);
+			existingReview.UpdateScore(score);
 		}
 
 		RaiseDomainEvent(new ReviewSubmittedDomainEvent(Id));
-
-		return Result.Success();
 	}
 
-	public Result AddComment(int userId, string content)
+	public void AddComment(UserId userId, CommentContent content)
 	{
-		Result<Comment> commentResult = Comment.Create(userId, content);
+		Comment newComment = Comment.Create(userId, content);
 
-		if (commentResult.IsFailure)
-		{
-			return Result.Failure(commentResult.Error);
-		}
-
-		_comments.Add(commentResult.Value);
-
-		return Result.Success();
+		_comments.Add(newComment);
 	}
 }

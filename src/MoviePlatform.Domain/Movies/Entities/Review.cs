@@ -20,23 +20,9 @@ public sealed class Review : BaseEntity<ReviewId>
 		Score = score;
 	}
 
-	public static Result<Review> Create(int userId, float score)
+	public static Review Create(UserId userId, ReviewScore score)
 	{
-		Result<UserId> userIdResult = UserId.Create(userId);
-
-		if (userIdResult.IsFailure)
-		{
-			return Result.Failure<Review>(userIdResult.Error);
-		}
-
-		Result<ReviewScore>	reviewScoreResult = ReviewScore.Create(score);
-
-		if (reviewScoreResult.IsFailure)
-		{
-			return Result.Failure<Review>(reviewScoreResult.Error);
-		}
-
-		return Result.Success<Review>(new(userIdResult.Value, reviewScoreResult.Value));
+		return new(userId, score);
 	}
 
 	internal void UpdateScore(ReviewScore newScore)
