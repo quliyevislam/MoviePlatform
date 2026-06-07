@@ -38,4 +38,9 @@ public sealed class Review : BaseEntity<ReviewId>
 
 		return Result.Success<Review>(new(userIdResult.Value, scoreResult.Value));
 	}
+
+	internal void UpdateScore(ReviewScore newScore)
+	{
+		Score = newScore;
+	}
 }
