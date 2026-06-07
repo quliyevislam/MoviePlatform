@@ -24,7 +24,7 @@ public readonly record struct Email
 			return Result.Failure<Email>(UserErrors.Email.Empty);
 		}
 
-		if (trimmedValue.Length < UserConstants.Email.MaxLength)
+		if (trimmedValue.Length > UserConstants.Email.MaxLength)
 		{
 			return Result.Failure<Email>(UserErrors.Email.TooLong);
 		}
