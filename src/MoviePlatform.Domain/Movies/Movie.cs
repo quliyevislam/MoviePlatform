@@ -41,6 +41,14 @@ public sealed class Movie : AggregateRoot<MovieId>
 		return new(userId, title, description, genre, releaseDate);
 	}
 
+	public void Update(Title newTitle, Description newDescription, Genre newGenre, ReleaseDate newReleaseDate)
+	{
+		Title = newTitle;
+		Description = newDescription;
+		Genre = newGenre;
+		ReleaseDate = newReleaseDate;
+	}
+
 	public void SubmitReview(UserId userId, ReviewScore score)
 	{
 		Review? review = _reviews.FirstOrDefault(review => review.UserId == userId);
