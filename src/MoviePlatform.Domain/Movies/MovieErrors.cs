@@ -70,6 +70,19 @@ public static class MovieErrors
 		);
 	}
 
+	public static class Comment
+	{
+		public static readonly Error NotFound = Error.NotFound(
+			"Movie.Comment.NotFound",
+			"The comment with the specified id was not found."
+		);
+
+		public static readonly Error Forbidden = Error.Forbidden(
+			"Movie.Comment.Forbidden",
+			"You do not have permission to delete this comment."
+		);
+	}
+
 	public static class CommentId
 	{
 		public static readonly Error Invalid = Error.Validation(
