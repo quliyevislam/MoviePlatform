@@ -10,9 +10,7 @@ public sealed class Comment : BaseEntity<CommentId>
 	public MovieId MovieId { get; private set; }
 	public CommentContent Content { get; private set; }
 
-	private Comment()
-	{
-	}
+	private Comment() { }
 
 	private Comment(UserId userId, CommentContent content)
 	{

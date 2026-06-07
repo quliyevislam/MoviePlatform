@@ -22,9 +22,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 	public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
 	public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
-	private Movie()
-	{
-	}
+	private Movie() { }
 
 	private Movie(UserId userId, Title title, Description description, Genre genre, ReleaseDate releaseDate)
 	{

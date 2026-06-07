@@ -10,9 +10,7 @@ public sealed class Review : BaseEntity<ReviewId>
 	public MovieId MovieId { get; private set; }
 	public ReviewScore Score { get; private set; }
 
-	private Review()
-	{
-	}
+	private Review() { }
 
 	private Review(UserId userId, ReviewScore score)
 	{

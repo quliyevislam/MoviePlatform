@@ -9,9 +9,7 @@ public sealed class User : AggregateRoot<UserId>
 	public Email Email { get; private set; }
 	public PasswordHash PasswordHash { get; private set; }
 
-	private User()
-	{
-	}
+	private User() { }
 
 	private User(Name name, Email email, PasswordHash passwordHash)
 	{
