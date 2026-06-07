@@ -29,14 +29,14 @@ public sealed class Review : BaseEntity<ReviewId>
 			return Result.Failure<Review>(userIdResult.Error);
 		}
 
-		Result<ReviewScore>	scoreResult = ReviewScore.Create(score);
+		Result<ReviewScore>	reviewScoreResult = ReviewScore.Create(score);
 
-		if (scoreResult.IsFailure)
+		if (reviewScoreResult.IsFailure)
 		{
-			return Result.Failure<Review>(scoreResult.Error);
+			return Result.Failure<Review>(reviewScoreResult.Error);
 		}
 
-		return Result.Success<Review>(new(userIdResult.Value, scoreResult.Value));
+		return Result.Success<Review>(new(userIdResult.Value, reviewScoreResult.Value));
 	}
 
 	internal void UpdateScore(ReviewScore newScore)
