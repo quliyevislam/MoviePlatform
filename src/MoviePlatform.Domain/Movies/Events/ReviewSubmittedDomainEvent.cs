@@ -3,4 +3,4 @@ using MoviePlatform.Domain.Movies.ValueObjects;
 
 namespace MoviePlatform.Domain.Movies.Events;
 
-public sealed record ReviewCreatedDomainEvent(MovieId MovieId) : DomainEvent;
+public sealed record ReviewSubmittedDomainEvent(MovieId MovieId) : DomainEvent;

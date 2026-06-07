@@ -69,23 +69,34 @@ public sealed class Movie : AggregateRoot<MovieId>
 		return Result.Success<Movie>(new(userIdResult.Value, titleResult.Value, descriptionResult.Value, genre, releaseDateResult.Value));
 	}
 
-	public Result AddReview(int userId, float score)
+	public Result SubmitReview(int userId, float score)
 	{
-		Result<Review> reviewResult = Review.Create(userId, score);
+		Review? existingReview = _reviews.FirstOrDefault(review => review.UserId.Value == userId);
 
-		if (reviewResult.IsFailure)
+		if (existingReview is null)
 		{
-			return Result.Failure(reviewResult.Error);
+			Result<Review> reviewResult = Review.Create(userId, score);
+
+			if (reviewResult.IsFailure)
+			{
+				return Result.Failure(reviewResult.Error);
+			}
+
+			_reviews.Add(reviewResult.Value);
+		}
+		else
+		{
+			Result<ReviewScore> reviewScoreResult = ReviewScore.Create(score);
+
+			if (reviewScoreResult.IsFailure)
+			{
+				return Result.Failure(reviewScoreResult.Error);
+			}
+
+			existingReview.UpdateScore(reviewScoreResult.Value);
 		}
 
-		if (_reviews.Any(review => review.UserId == reviewResult.Value.UserId))
-		{
-			return Result.Failure(MovieErrors.Review.AlreadyReviewed);
-		}
-
-		_reviews.Add(reviewResult.Value);
-
-		RaiseDomainEvent(new ReviewCreatedDomainEvent(Id));
+		RaiseDomainEvent(new ReviewSubmittedDomainEvent(Id));
 
 		return Result.Success();
 	}
