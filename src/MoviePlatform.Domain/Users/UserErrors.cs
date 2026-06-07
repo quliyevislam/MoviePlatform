@@ -52,4 +52,17 @@ public static class UserErrors
 			$"The user email cannot exceed {UserConstants.Email.MaxLength} characters."
 		);
 	}
+
+	public static class PasswordHash
+	{
+		public static readonly Error Required = Error.Validation(
+			"User.PasswordHash.Required",
+			"The password hash is required."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"User.PasswordHash.Empty",
+			"The password hash cannot be empty."
+		);
+	}
 }
