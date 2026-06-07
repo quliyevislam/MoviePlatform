@@ -6,4 +6,9 @@ public static class UserConstants
 	{
 		public static readonly int MaxLength = 50;
 	}
+
+	public static class Email
+	{
+		public static readonly int MaxLength = 254;
+	}
 }

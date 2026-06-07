@@ -29,4 +29,27 @@ public static class UserErrors
 			$"The user name cannot exceed {UserConstants.Name.MaxLength} characters."
 		);
 	}
+
+	public static class Email
+	{
+		public static readonly Error Required = Error.Validation(
+			"User.Email.Required",
+			"The user email is required."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"User.Email.Empty",
+			"The user email cannot be empty."
+		);
+
+		public static readonly Error InvalidFormat = Error.Validation(
+			"User.Email.InvalidFormat",
+			"The user email format is invalid."
+		);
+
+		public static readonly Error TooLong = Error.Validation(
+			"User.Email.TooLong",
+			$"The user email cannot exceed {UserConstants.Email.MaxLength} characters."
+		);
+	}
 }

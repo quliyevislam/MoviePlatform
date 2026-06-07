@@ -7,7 +7,7 @@ public readonly record struct Name
 {
 	public string Value { get; }
 
-	public Name(string value) => Value = value;
+	private Name(string value) => Value = value;
 
 	public static Result<Name> Create(string value)
 	{
@@ -28,6 +28,6 @@ public readonly record struct Name
 			return Result.Failure<Name>(UserErrors.Name.TooLong);
 		}
 
-		return Result.Success<Name>(new(value));
+		return Result.Success<Name>(new(trimmedValue));
 	}
 }
