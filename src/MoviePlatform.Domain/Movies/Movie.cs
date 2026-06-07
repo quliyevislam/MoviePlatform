@@ -1,8 +1,11 @@
 using MoviePlatform.Domain.Common;
 using MoviePlatform.Domain.Movies.Enums;
 using MoviePlatform.Domain.Movies.Entities;
+using MoviePlatform.Domain.Movies.Events;
 using MoviePlatform.Domain.Movies.ValueObjects;
 using MoviePlatform.Domain.Users.ValueObjects;
+
+namespace MoviePlatform.Domain.Movies;
 
 public sealed class Movie : AggregateRoot<MovieId>
 {
@@ -64,5 +67,26 @@ public sealed class Movie : AggregateRoot<MovieId>
 		}
 
 		return Result.Success<Movie>(new(userIdResult.Value, titleResult.Value, descriptionResult.Value, genre, releaseDateResult.Value));
+	}
+
+	public Result AddReview(int userId, float score)
+	{
+		Result<Review> reviewResult = Review.Create(userId, score);
+
+		if (reviewResult.IsFailure)
+		{
+			return Result.Failure(reviewResult.Error);
+		}
+
+		if (_reviews.Any(review => review.UserId == userId))
+		{
+			return Result.Failure(MovieErrors.Review.AlreadyReviewed);
+		}
+
+		_reviews.Add(reviewResult.Value);
+
+		RaiseDomainEvent(new ReviewCreatedDomainEvent(Id));
+
+		return Result.Success();
 	}
 }

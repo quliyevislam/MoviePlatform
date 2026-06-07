@@ -54,6 +54,14 @@ public static class MovieErrors
 		);
 	}
 
+	public static class Review
+	{
+		public static readonly Error AlreadyReviewed = Error.Conflict(
+			"Movie.Review.AlreadyReviewed",
+			"This user has already submitted a review for this movie."
+		);
+	}
+
 	public static class ReviewId
 	{
 		public static readonly Error Invalid = Error.Validation(
