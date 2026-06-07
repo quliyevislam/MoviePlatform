@@ -43,9 +43,9 @@ public sealed class Movie : AggregateRoot<MovieId>
 
 	public void SubmitReview(UserId userId, ReviewScore score)
 	{
-		Review? existingReview = _reviews.FirstOrDefault(review => review.UserId == userId);
+		Review? review = _reviews.FirstOrDefault(review => review.UserId == userId);
 
-		if (existingReview is null)
+		if (review is null)
 		{
 			Review newReview = Review.Create(userId, score);
 
@@ -53,7 +53,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 		}
 		else
 		{
-			existingReview.UpdateScore(score);
+			review.UpdateScore(score);
 		}
 
 		RaiseDomainEvent(new ReviewSubmittedDomainEvent(Id));
@@ -64,5 +64,24 @@ public sealed class Movie : AggregateRoot<MovieId>
 		Comment newComment = Comment.Create(userId, content);
 
 		_comments.Add(newComment);
+	}
+
+	public Result RemoveComment(UserId userId, CommentId commentId)
+	{
+		Comment? comment = _comments.FirstOrDefault(comment => comment.Id == commentId);
+
+		if (comment is null)
+		{
+			return Result.Failure(MovieErrors.Comment.NotFound);
+		}
+
+		if (comment.UserId != userId)
+		{
+			return Result.Failure(MovieErrors.Comment.Forbidden);
+		}
+
+		_comments.Remove(comment);
+
+		return Result.Success();
 	}
 }
