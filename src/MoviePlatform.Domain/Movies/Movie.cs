@@ -72,7 +72,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 		_comments.Add(newComment);
 	}
 
-	public Result RemoveComment(UserId userId, CommentId commentId)
+	public Result DeleteComment(UserId userId, CommentId commentId)
 	{
 		Comment? comment = _comments.FirstOrDefault(comment => comment.Id == commentId);
 
