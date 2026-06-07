@@ -78,7 +78,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 			return Result.Failure(reviewResult.Error);
 		}
 
-		if (_reviews.Any(review => review.UserId == userId))
+		if (_reviews.Any(review => review.UserId == reviewResult.Value.UserId))
 		{
 			return Result.Failure(MovieErrors.Review.AlreadyReviewed);
 		}
@@ -86,6 +86,20 @@ public sealed class Movie : AggregateRoot<MovieId>
 		_reviews.Add(reviewResult.Value);
 
 		RaiseDomainEvent(new ReviewCreatedDomainEvent(Id));
+
+		return Result.Success();
+	}
+
+	public Result AddComment(int userId, string content)
+	{
+		Result<Comment> commentResult = Comment.Create(userId, content);
+
+		if (commentResult.IsFailure)
+		{
+			return Result.Failure(commentResult.Error);
+		}
+
+		_comments.Add(commentResult.Value);
 
 		return Result.Success();
 	}
