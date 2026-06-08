@@ -14,7 +14,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 	public Description Description { get; private set; }
 	public Genre Genre { get; private set; }
 	public ReleaseDate ReleaseDate { get; private set; }
-	public AverageRating AverageRating { get; private set; }
+	public ReviewScore AverageRating { get; private set; }
 
 	private readonly List<Review> _reviews = [];
 	private readonly List<Comment> _comments = [];
@@ -31,7 +31,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 		Description = description;
 		Genre = genre;
 		ReleaseDate = releaseDate;
-		AverageRating = new AverageRating();
+		AverageRating = new ReviewScore();
 	}
 
 	public static Movie Create(UserId userId, Title title, Description description, Genre genre, ReleaseDate releaseDate)
