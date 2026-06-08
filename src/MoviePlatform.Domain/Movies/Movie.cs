@@ -47,6 +47,20 @@ public sealed class Movie : AggregateRoot<MovieId>
 		ReleaseDate = newReleaseDate;
 	}
 
+	private void RecalculateAverageRating()
+	{
+		int totalReviewCount = _reviews.Count;
+
+		if (totalReviewCount == 0)
+		{
+			AverageRating = new ReviewScore();
+			return;
+		}
+
+		double totalScoreSum = _reviews.Sum(review => review.Score.Value);
+		AverageRating =	ReviewScore.Create(totalScoreSum / totalReviewCount).Value;
+	}
+
 	public void SubmitReview(UserId userId, ReviewScore score)
 	{
 		Review? review = _reviews.FirstOrDefault(review => review.UserId == userId);
@@ -62,7 +76,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 			review.UpdateScore(score);
 		}
 
-		RaiseDomainEvent(new ReviewSubmittedDomainEvent(Id));
+		RecalculateAverageRating();
 	}
 
 	public void AddComment(UserId userId, CommentContent content)

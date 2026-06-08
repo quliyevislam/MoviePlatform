@@ -5,13 +5,13 @@ namespace MoviePlatform.Domain.Movies.ValueObjects;
 
 public readonly record struct ReviewScore
 {
-	public float Value { get; }
+	public double Value { get; }
 
-	private ReviewScore(float value) => Value = value;
+	private ReviewScore(double value) => Value = value;
 
-	public static Result<ReviewScore> Create(float value)
+	public static Result<ReviewScore> Create(double value)
 	{
-		float roundedValue = (float) Math.Round(value, MovieConstants.ReviewScore.DecimalPlacesScale);
+		double roundedValue = Math.Round(value, MovieConstants.ReviewScore.DecimalPlacesScale);
 
 		if (roundedValue < MovieConstants.ReviewScore.MinScore || roundedValue > MovieConstants.ReviewScore.MaxScore)
 		{

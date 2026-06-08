@@ -17,8 +17,8 @@ public static class MovieConstants
 		public static readonly int MaxDigitsPrecision = 3;
 		public static readonly int DecimalPlacesScale = 2;
 
-		public static readonly float MinScore = 1.00F;
-		public static readonly float MaxScore = 5.00F;
+		public static readonly double MinScore = 1.00D;
+		public static readonly double MaxScore = 5.00D;
 	}
 
 	public static class CommentContent
