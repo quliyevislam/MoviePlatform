@@ -11,11 +11,13 @@ public readonly record struct ReviewScore
 
 	public static Result<ReviewScore> Create(float value)
 	{
-		if (value < MovieConstants.ReviewScore.MinScore || value > MovieConstants.ReviewScore.MaxScore)
+		float roundedValue = (float) Math.Round(value, MovieConstants.ReviewScore.DecimalPlacesScale);
+
+		if (roundedValue < MovieConstants.ReviewScore.MinScore || roundedValue > MovieConstants.ReviewScore.MaxScore)
 		{
 			return Result.Failure<ReviewScore>(MovieErrors.ReviewScore.OutOfRange);
 		}
 
-		return Result.Success<ReviewScore>(new(value));
+		return Result.Success<ReviewScore>(new(roundedValue));
 	}
 }

@@ -14,8 +14,11 @@ public static class MovieConstants
 
 	public static class ReviewScore
 	{
-		public static readonly float MinScore = 1.0F;
-		public static readonly float MaxScore = 5.0F;
+		public static readonly int MaxDigitsPrecision = 3;
+		public static readonly int DecimalPlacesScale = 2;
+
+		public static readonly float MinScore = 1.00F;
+		public static readonly float MaxScore = 5.00F;
 	}
 
 	public static class CommentContent
