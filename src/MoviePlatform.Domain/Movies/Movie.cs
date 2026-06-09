@@ -36,17 +36,68 @@ public sealed class Movie : AggregateRoot<MovieId>
 		ReviewCount = ReviewCount.Create(0).Value;
 	}
 
-	public static Movie Create(UserId userId, Title title, Description description, Genre genre, ReleaseDate releaseDate)
+	public static Result<Movie> Create(int userId, string title, string description, Genre genre, DateOnly releaseDate, DateTime currentUtcTime)
 	{
-		return new(userId, title, description, genre, releaseDate);
+		Result<UserId> userIdResult = UserId.Create(userId);
+
+		if (userIdResult.IsFailure)
+		{
+			return Result.Failure<Movie>(userIdResult.Error);
+		}
+
+		Result<Title> titleResult = Title.Create(title);
+
+		if (titleResult.IsFailure)
+		{
+			return Result.Failure<Movie>(titleResult.Error);
+		}
+
+		Result<Description> descriptionResult = Description.Create(description);
+
+		if (descriptionResult.IsFailure)
+		{
+			return Result.Failure<Movie>(descriptionResult.Error);
+		}
+
+		Result<ReleaseDate> releaseDateResult = ReleaseDate.Create(releaseDate, currentUtcTime);
+
+		if (releaseDateResult.IsFailure)
+		{
+			return Result.Failure<Movie>(releaseDateResult.Error);
+		}
+
+		return Result.Success<Movie>(new(userIdResult.Value, titleResult.Value, descriptionResult.Value, genre, releaseDateResult.Value));
 	}
 
-	public void Update(Title newTitle, Description newDescription, Genre newGenre, ReleaseDate newReleaseDate)
+	public Result Update(string newTitle, string newDescription, Genre newGenre, DateOnly newReleaseDate, DateTime currentUtcTime)
 	{
-		Title = newTitle;
-		Description = newDescription;
+		Result<Title> newTitleResult = Title.Create(newTitle);
+
+		if (newTitleResult.IsFailure)
+		{
+			return Result.Failure(newTitleResult.Error);
+		}
+
+		Result<Description> newDescriptionResult = Description.Create(newDescription);
+
+		if (newDescriptionResult.IsFailure)
+		{
+			return Result.Failure(newDescriptionResult.Error);
+		}
+
+		Result<ReleaseDate> newReleaseDateResult = ReleaseDate.Create(newReleaseDate, currentUtcTime);
+
+		if (newReleaseDateResult.IsFailure)
+		{
+			return Result.Failure(newReleaseDateResult.Error);
+		}
+
+		Title = newTitleResult.Value;
+		Description = newDescriptionResult.Value;
 		Genre = newGenre;
-		ReleaseDate = newReleaseDate;
+		ReleaseDate = newReleaseDateResult.Value;
+
+		return Result.Success();
 	}
 
 	private void RecalculateAverageRating()
@@ -65,41 +116,87 @@ public sealed class Movie : AggregateRoot<MovieId>
 		AverageRating =	AverageRating.Create(totalScoreSum / totalReviewCount).Value;
 	}
 
-	public void SubmitReview(UserId userId, ReviewScore score)
+	public Result SubmitReview(int userId, double score)
 	{
-		Review? review = _reviews.FirstOrDefault(review => review.UserId == userId);
+		Result<UserId> userIdResult = UserId.Create(userId);
+
+		if (userIdResult.IsFailure)
+		{
+			return Result.Failure(userIdResult.Error);
+		}
+
+		Result<ReviewScore> reviewScoreResult = ReviewScore.Create(score);
+
+		if (reviewScoreResult.IsFailure)
+		{
+			return Result.Failure(reviewScoreResult.Error);
+		}
+
+		Review? review = _reviews.FirstOrDefault(review => review.UserId == userIdResult.Value);
 
 		if (review is null)
 		{
-			Review newReview = Review.Create(userId, score);
+			Review newReview = Review.Create(userIdResult.Value, reviewScoreResult.Value);
 
 			_reviews.Add(newReview);
 		}
 		else
 		{
-			review.UpdateScore(score);
+			review.UpdateScore(reviewScoreResult.Value);
 		}
 
 		RecalculateAverageRating();
+
+		return Result.Success();
 	}
 
-	public void AddComment(UserId userId, CommentContent content)
+	public Result AddComment(int userId, string content)
 	{
-		Comment newComment = Comment.Create(userId, content);
+		Result<UserId> userIdResult = UserId.Create(userId);
+
+		if (userIdResult.IsFailure)
+		{
+			return Result.Failure(userIdResult.Error);
+		}
+
+		Result<CommentContent> commentContentResult = CommentContent.Create(content);
+
+		if (commentContentResult.IsFailure)
+		{
+			return Result.Failure(commentContentResult.Error);
+		}
+
+		Comment newComment = Comment.Create(userIdResult.Value, commentContentResult.Value);
 
 		_comments.Add(newComment);
+
+		return Result.Success();
 	}
 
-	public Result DeleteComment(UserId userId, CommentId commentId)
+	public Result DeleteComment(int userId, int commentId)
 	{
-		Comment? comment = _comments.FirstOrDefault(comment => comment.Id == commentId);
+		Result<UserId> userIdResult = UserId.Create(userId);
+
+		if (userIdResult.IsFailure)
+		{
+			return Result.Failure(userIdResult.Error);
+		}
+
+		Result<CommentId> commentIdResult = CommentId.Create(commentId);
+
+		if (commentIdResult.IsFailure)
+		{
+			return Result.Failure(commentIdResult.Error);
+		}
+
+		Comment? comment = _comments.FirstOrDefault(comment => comment.Id == commentIdResult.Value);
 
 		if (comment is null)
 		{
 			return Result.Failure(MovieErrors.Comment.NotFound);
 		}
 
-		if (comment.UserId != userId)
+		if (comment.UserId != userIdResult.Value)
 		{
 			return Result.Failure(MovieErrors.Comment.Forbidden);
 		}

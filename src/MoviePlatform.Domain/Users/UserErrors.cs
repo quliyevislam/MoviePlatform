@@ -4,6 +4,11 @@ namespace MoviePlatform.Domain.Users;
 
 public static class UserErrors
 {
+	public static readonly Error EmailAlreadyInUse = Error.Conflict(
+		"User.EmailAlreadyInUse",
+		"The provided email address is already registered."
+	);
+
 	public static class UserId
 	{
 		public static readonly Error Invalid = Error.Validation(
