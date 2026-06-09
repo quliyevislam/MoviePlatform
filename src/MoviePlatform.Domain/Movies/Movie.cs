@@ -14,7 +14,8 @@ public sealed class Movie : AggregateRoot<MovieId>
 	public Description Description { get; private set; }
 	public Genre Genre { get; private set; }
 	public ReleaseDate ReleaseDate { get; private set; }
-	public ReviewScore AverageRating { get; private set; }
+	public AverageRating AverageRating { get; private set; }
+	public ReviewCount ReviewCount { get; private set; }
 
 	private readonly List<Review> _reviews = [];
 	private readonly List<Comment> _comments = [];
@@ -31,7 +32,8 @@ public sealed class Movie : AggregateRoot<MovieId>
 		Description = description;
 		Genre = genre;
 		ReleaseDate = releaseDate;
-		AverageRating = new ReviewScore();
+		AverageRating = AverageRating.Create(0).Value;
+		ReviewCount = ReviewCount.Create(0).Value;
 	}
 
 	public static Movie Create(UserId userId, Title title, Description description, Genre genre, ReleaseDate releaseDate)
@@ -51,14 +53,16 @@ public sealed class Movie : AggregateRoot<MovieId>
 	{
 		int totalReviewCount = _reviews.Count;
 
+		ReviewCount = ReviewCount.Create(totalReviewCount).Value;
+
 		if (totalReviewCount == 0)
 		{
-			AverageRating = new ReviewScore();
+			AverageRating = AverageRating.Create(0).Value;
 			return;
 		}
 
 		double totalScoreSum = _reviews.Sum(review => review.Score.Value);
-		AverageRating =	ReviewScore.Create(totalScoreSum / totalReviewCount).Value;
+		AverageRating =	AverageRating.Create(totalScoreSum / totalReviewCount).Value;
 	}
 
 	public void SubmitReview(UserId userId, ReviewScore score)

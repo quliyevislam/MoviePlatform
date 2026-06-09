@@ -69,7 +69,7 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 			.Property(movie => movie.AverageRating)
 			.HasColumnName("average_rating")
 			.HasPrecision(MovieConstants.ReviewScore.MaxDigitsPrecision, MovieConstants.ReviewScore.DecimalPlacesScale)
-			.HasConversion(averageRating => averageRating.Value, value => ReviewScore.Create(value).Value);
+			.HasConversion(averageRating => averageRating.Value, value => AverageRating.Create(value).Value);
 
 			ConfigureComments(builder);
 			ConfigureReviews(builder);

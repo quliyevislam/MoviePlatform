@@ -7,6 +7,11 @@ public readonly record struct ReleaseDate
 {
 	public DateOnly Value { get; }
 
+	public ReleaseDate()
+	{
+		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
+	}
+
 	private ReleaseDate(DateOnly value) => Value = value;
 
 	public static Result<ReleaseDate> Create(DateOnly value, DateTime currentUtcTime)

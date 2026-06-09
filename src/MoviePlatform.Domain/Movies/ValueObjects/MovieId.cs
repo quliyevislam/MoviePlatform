@@ -7,6 +7,11 @@ public readonly record struct MovieId
 {
 	public int Value { get; }
 
+	public MovieId()
+	{
+		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
+	}
+
 	private MovieId(int value) => Value = value;
 
 	public static Result<MovieId> Create(int value)

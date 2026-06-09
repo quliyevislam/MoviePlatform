@@ -7,6 +7,11 @@ public readonly record struct Description
 {
 	public string? Value { get; }
 
+	public Description()
+	{
+		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
+	}
+
 	private Description(string? value) => Value = value;
 
 	public static Result<Description> Create(string? value)

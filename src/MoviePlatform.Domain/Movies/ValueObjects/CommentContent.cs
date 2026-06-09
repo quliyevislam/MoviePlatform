@@ -7,6 +7,11 @@ public readonly record struct CommentContent
 {
 	public string Value { get; }
 
+	public CommentContent()
+	{
+		throw new InvalidOperationException("Instantiation via the default parameterless constructor is prohibited.");
+	}
+
 	private CommentContent(string value) => Value = value;
 
 	public static Result<CommentContent> Create(string value)

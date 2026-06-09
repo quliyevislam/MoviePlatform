@@ -46,6 +46,22 @@ public static class MovieErrors
 		);
 	}
 
+	public static class AverageRating
+	{
+		public static readonly Error OutOfRange = Error.Validation(
+			"Movie.AverageRating.OutOfRange",
+			$"The average rating must be 0 or between {MovieConstants.ReviewScore.MinScore} and {MovieConstants.ReviewScore.MaxScore}."
+		);
+	}
+
+	public static class ReviewCount
+	{
+		public static readonly Error Negative = Error.Validation(
+			"Moive.RatingCount.Negative",
+			"The rating count cannot be negative."
+		);
+	}
+
 	public static class ReviewId
 	{
 		public static readonly Error Invalid = Error.Validation(
