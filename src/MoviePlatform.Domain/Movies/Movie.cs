@@ -104,6 +104,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 	{
 		int totalReviewCount = _reviews.Count;
 
+		// Result<ReviewCount> never fails
 		ReviewCount = ReviewCount.Create(totalReviewCount).Value;
 
 		if (totalReviewCount == 0)
@@ -116,33 +117,19 @@ public sealed class Movie : AggregateRoot<MovieId>
 		AverageRating =	AverageRating.Create(totalScoreSum / totalReviewCount).Value;
 	}
 
-	public Result SubmitReview(int userId, double score)
+	public Result SubmitReview(Review newReview)
 	{
-		Result<UserId> userIdResult = UserId.Create(userId);
+		Review? existingReview = _reviews.FirstOrDefault(
+			existingReview => existingReview.UserId == newReview.UserId
+		);
 
-		if (userIdResult.IsFailure)
+		if (existingReview is null)
 		{
-			return Result.Failure(userIdResult.Error);
-		}
-
-		Result<ReviewScore> reviewScoreResult = ReviewScore.Create(score);
-
-		if (reviewScoreResult.IsFailure)
-		{
-			return Result.Failure(reviewScoreResult.Error);
-		}
-
-		Review? review = _reviews.FirstOrDefault(review => review.UserId == userIdResult.Value);
-
-		if (review is null)
-		{
-			Review newReview = Review.Create(userIdResult.Value, reviewScoreResult.Value);
-
 			_reviews.Add(newReview);
 		}
 		else
 		{
-			review.UpdateScore(reviewScoreResult.Value);
+			existingReview.UpdateScore(newReview.Score);
 		}
 
 		RecalculateAverageRating();
@@ -150,53 +137,25 @@ public sealed class Movie : AggregateRoot<MovieId>
 		return Result.Success();
 	}
 
-	public Result AddComment(int userId, string content)
+	public Result AddComment(Comment newComment)
 	{
-		Result<UserId> userIdResult = UserId.Create(userId);
-
-		if (userIdResult.IsFailure)
-		{
-			return Result.Failure(userIdResult.Error);
-		}
-
-		Result<CommentContent> commentContentResult = CommentContent.Create(content);
-
-		if (commentContentResult.IsFailure)
-		{
-			return Result.Failure(commentContentResult.Error);
-		}
-
-		Comment newComment = Comment.Create(userIdResult.Value, commentContentResult.Value);
-
 		_comments.Add(newComment);
 
 		return Result.Success();
 	}
 
-	public Result DeleteComment(int userId, int commentId)
+	public Result DeleteComment(Comment comment)
 	{
-		Result<UserId> userIdResult = UserId.Create(userId);
+		Comment? existingComment = _comments.FirstOrDefault(
+			existingComment => existingComment.Id == comment.Id
+		);
 
-		if (userIdResult.IsFailure)
-		{
-			return Result.Failure(userIdResult.Error);
-		}
-
-		Result<CommentId> commentIdResult = CommentId.Create(commentId);
-
-		if (commentIdResult.IsFailure)
-		{
-			return Result.Failure(commentIdResult.Error);
-		}
-
-		Comment? comment = _comments.FirstOrDefault(comment => comment.Id == commentIdResult.Value);
-
-		if (comment is null)
+		if (existingComment is null)
 		{
 			return Result.Failure(MovieErrors.Comment.NotFound);
 		}
 
-		if (comment.UserId != userIdResult.Value)
+		if (existingComment.UserId != comment.UserId)
 		{
 			return Result.Failure(MovieErrors.Comment.Forbidden);
 		}

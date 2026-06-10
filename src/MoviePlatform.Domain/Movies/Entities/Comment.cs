@@ -20,8 +20,22 @@ public sealed class Comment : BaseEntity<CommentId>
 		CreatedAtUtc = createdAtUtc;
 	}
 
-	public static Comment Create(UserId userId, CommentContent content)
+	public static Result<Comment> Create(int userId, string content)
 	{
-		return new(userId, content, DateTime.UtcNow);
+		Result<UserId> userIdResult = UserId.Create(userId);
+
+		if (userIdResult.IsFailure)
+		{
+			return Result.Failure<Comment>(userIdResult.Error);
+		}
+
+		Result<CommentContent> commentContentResult = CommentContent.Create(content);
+
+		if (commentContentResult.IsFailure)
+		{
+			return Result.Failure<Comment>(commentContentResult.Error);
+		}
+
+		return Result.Success<Comment>(new(userIdResult.Value, commentContentResult.Value, DateTime.UtcNow));
 	}
 }
