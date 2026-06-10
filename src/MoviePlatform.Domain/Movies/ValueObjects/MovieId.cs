@@ -16,10 +16,10 @@ public readonly record struct MovieId
 
 	public static Result<MovieId> Create(int value)
 	{
-		if (value <= 0)
-		{
-			return Result.Failure<MovieId>(MovieErrors.MovieId.Invalid);
-		}
+		// if (value <= 0)
+		// {
+		//		return Result.Failure<MovieId>(MovieErrors.MovieId.Invalid);
+		// }
 
 		return Result.Success<MovieId>(new(value));
 	}

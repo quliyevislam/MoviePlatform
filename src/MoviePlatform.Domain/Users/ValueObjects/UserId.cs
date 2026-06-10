@@ -11,10 +11,10 @@ public readonly record struct UserId
 
 	public static Result<UserId> Create(int value)
 	{
-		if (value <= 0)
-		{
-			return Result.Failure<UserId>(UserErrors.UserId.Invalid);
-		}
+		// if (value <= 0)
+		// {
+		//		return Result.Failure<UserId>(UserErrors.UserId.Invalid);
+		// }
 
 		return Result.Success<UserId>(new(value));
 	}
