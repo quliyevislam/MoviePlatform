@@ -58,6 +58,24 @@ public static class UserErrors
 		);
 	}
 
+	public static class Password
+	{
+		public static readonly Error Required = Error.Validation(
+			"User.Password.Required",
+			"The password is required."
+		);
+
+		public static readonly Error Empty = Error.Validation(
+			"User.Password.Empty",
+			"The password cannot be empty."
+		);
+
+		public static readonly Error TooShort = Error.Validation(
+			"User.Password.TooShort",
+			$"The password cannot be less than {UserConstants.Password.MinLength} characters."
+		);
+	}
+
 	public static class PasswordHash
 	{
 		public static readonly Error Required = Error.Validation(
