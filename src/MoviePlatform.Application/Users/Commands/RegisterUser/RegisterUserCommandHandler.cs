@@ -37,12 +37,12 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
         {
             ValidationFailure firstFailure = validationResult.Errors.First();
 
-            Error validationError = Error.Validation(
-                firstFailure.ErrorCode,
-                firstFailure.ErrorMessage
-            );
-
-            return Result.Failure<int>(validationError);
+            return Result.Failure<int>(
+				Error.Validation(
+					firstFailure.ErrorCode,
+					firstFailure.ErrorMessage
+				)
+			);
         }
 
 		Result<Email> emailResult = Email.Create(request.Email);

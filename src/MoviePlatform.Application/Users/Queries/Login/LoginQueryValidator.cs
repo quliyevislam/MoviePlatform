@@ -1,28 +1,15 @@
 using FluentValidation;
 using MoviePlatform.Domain.Users;
 
-namespace MoviePlatform.Application.Users.Commands.RegisterUser;
+namespace MoviePlatform.Application.Users.Queries.Login;
 
-public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+public sealed class LoginQueryValidator : AbstractValidator<LoginQuery>
 {
-	public RegisterUserCommandValidator()
-	{
+    public LoginQueryValidator()
+    {
 		ClassLevelCascadeMode = CascadeMode.Stop;
 
-		RuleFor(command => command.Name)
-			.NotNull()
-			.WithErrorCode(UserErrors.Name.Required.Code)
-            .WithMessage(UserErrors.Name.Required.Description)
-
-			.NotEmpty()
-			.WithErrorCode(UserErrors.Name.Empty.Code)
-            .WithMessage(UserErrors.Name.Empty.Description)
-
-			.MaximumLength(UserConstants.Name.MaxLength)
-			.WithErrorCode(UserErrors.Name.TooLong.Code)
-            .WithMessage(UserErrors.Name.TooLong.Description);
-
-		RuleFor(command => command.Email)
+		RuleFor(query => query.Email)
 			.NotNull()
 			.WithErrorCode(UserErrors.Email.Required.Code)
             .WithMessage(UserErrors.Email.Required.Description)
@@ -35,7 +22,7 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
 			.WithErrorCode(UserErrors.Email.TooLong.Code)
             .WithMessage(UserErrors.Email.TooLong.Description);
 
-		RuleFor(command => command.Password)
+		RuleFor(query => query.Password)
 			.NotNull()
 			.WithErrorCode(UserErrors.Password.Required.Code)
             .WithMessage(UserErrors.Password.Required.Description)

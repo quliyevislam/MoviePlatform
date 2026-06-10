@@ -9,6 +9,11 @@ public static class UserErrors
 		"The provided email address is already registered."
 	);
 
+    public static readonly Error InvalidCredentials = Error.Failure(
+        "User.InvalidCredentials",
+        "The provided credentials are incorrect."
+    );
+
 	public static class UserId
 	{
 		public static readonly Error Invalid = Error.Validation(
