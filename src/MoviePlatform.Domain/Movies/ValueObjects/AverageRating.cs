@@ -16,7 +16,6 @@ public readonly record struct AverageRating
 
 	public static Result<AverageRating> Create(double value)
 	{
-
 		if (value == 0)
 		{
 			return Result.Success<AverageRating>(new(value));
@@ -30,6 +29,5 @@ public readonly record struct AverageRating
 		}
 
 		return Result.Success<AverageRating>(new(roundedValue));
-
 	}
 }

@@ -16,7 +16,7 @@ public readonly record struct CommentId
 
 	public static Result<CommentId> Create(int value)
 	{
-		// if (value < 0)
+		// if (value <= 0)
 		// {
 		//	 return Result.Failure<CommentId>(MovieErrors.CommentId.Invalid);
 		// }

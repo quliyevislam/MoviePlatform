@@ -104,7 +104,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 	{
 		int totalReviewCount = _reviews.Count;
 
-		// Result<ReviewCount> never fails
+		// ReviewCount Result never fails
 		ReviewCount = ReviewCount.Create(totalReviewCount).Value;
 
 		if (totalReviewCount == 0)
