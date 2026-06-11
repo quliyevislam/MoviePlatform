@@ -5,9 +5,9 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="FluentValidation" Version="12.1.1" />
-		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
-		<PackageReference Include="MediatR" Version="14.1.0" />
+		<PackageReference Include="FluentValidation" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+		<PackageReference Include="MediatR" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\MoviePlatform.Domain\MoviePlatform.Domain.csproj" />

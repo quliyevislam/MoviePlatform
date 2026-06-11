@@ -5,10 +5,10 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
-		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.2" />
-		<PackageReference Include="Dapper" Version="2.1.79" />
+		<PackageReference Include="BCrypt.Net-Next" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Dapper" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\MoviePlatform.Domain\MoviePlatform.Domain.csproj" />
