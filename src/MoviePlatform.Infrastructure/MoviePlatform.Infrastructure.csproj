@@ -11,7 +11,7 @@
 		<PackageReference Include="Dapper" Version="2.1.79" />
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\MoviePlatform.Domain\MoviePlatform.Domain.csproj" />
-	  <ProjectReference Include="..\MoviePlatform.Application\MoviePlatform.Application.csproj" />
+		<ProjectReference Include="..\MoviePlatform.Domain\MoviePlatform.Domain.csproj" />
+		<ProjectReference Include="..\MoviePlatform.Application\MoviePlatform.Application.csproj" />
 	</ItemGroup>
 </Project>
