@@ -14,6 +14,6 @@ public static class UserConstants
 
 	public static class Password
 	{
-		public static readonly int MinLength = 8;
+		public static readonly string Pattern = @"^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$";
 	}
 }

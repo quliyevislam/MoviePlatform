@@ -75,9 +75,10 @@ public static class UserErrors
 			"The password cannot be empty."
 		);
 
-		public static readonly Error TooShort = Error.Validation(
-			"User.Password.TooShort",
-			$"The password cannot be less than {UserConstants.Password.MinLength} characters."
+		public static readonly Error Weak = Error.Validation(
+			"User.Password.Weak",
+			"The password must be at least 8 characters long,"
+			+ " contain both uppercase and lowercase letters, and contain no spaces."
 		);
 	}
 
