@@ -14,6 +14,11 @@ public static class UserConstants
 
 	public static class Password
 	{
-		public static readonly string Pattern = @"^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$";
+		public static readonly int MinLength = 8;
+
+		public static readonly string RequireUppercase = @"[A-Z]";
+		public static readonly string RequireLowercase = @"[a-z]";
+		public static readonly string RequireDigit     = @"[0-9]";
+		public static readonly string RequireNoSpace  = @"^\S*$";
 	}
 }

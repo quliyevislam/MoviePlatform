@@ -75,10 +75,29 @@ public static class UserErrors
 			"The password cannot be empty."
 		);
 
-		public static readonly Error Weak = Error.Validation(
-			"User.Password.Weak",
-			"The password must be at least 8 characters long,"
-			+ " contain both uppercase and lowercase letters, and contain no spaces."
+		public static readonly Error TooShort = Error.Validation(
+			"User.Password.TooShort",
+			$"The password must be at least {UserConstants.Password.MinLength} characters long."
+		);
+
+		public static readonly Error UppercaseRequired = Error.Validation(
+			"User.Password.UppercaseRequired",
+			"The password must contain at least one uppercase letter."
+		);
+
+		public static readonly Error LowercaseRequired = Error.Validation(
+			"User.Password.LowercaseRequired",
+			"The password must contain at least one lowercase letter."
+		);
+
+		public static readonly Error DigitRequired = Error.Validation(
+			"User.Password.DigitRequired",
+			"The password must contain at least one number."
+		);
+
+		public static readonly Error SpacesNotAllowed = Error.Validation(
+			"User.Password.NoSpaceRequired",
+			"The password must not contain spaces."
 		);
 	}
 
