@@ -33,7 +33,11 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
 
 			.MaximumLength(UserConstants.Email.MaxLength)
 			.WithErrorCode(UserErrors.Email.TooLong.Code)
-            .WithMessage(UserErrors.Email.TooLong.Description);
+            .WithMessage(UserErrors.Email.TooLong.Description)
+
+			.EmailAddress()
+			.WithErrorCode(UserErrors.Email.InvalidFormat.Code)
+            .WithMessage(UserErrors.Email.InvalidFormat.Description);
 
 		RuleFor(command => command.Password)
 			.NotNull()
@@ -44,8 +48,8 @@ public sealed class RegisterUserCommandValidator : AbstractValidator<RegisterUse
 			.WithErrorCode(UserErrors.Password.Empty.Code)
             .WithMessage(UserErrors.Password.Empty.Description)
 
-			.MinimumLength(UserConstants.Password.MinLength)
-			.WithErrorCode(UserErrors.Password.TooShort.Code)
-            .WithMessage(UserErrors.Password.TooShort.Description);
+			.Matches(UserConstants.Password.Pattern)
+			.WithErrorCode(UserErrors.Password.Weak.Code)
+            .WithMessage(UserErrors.Password.Weak.Description);
 	}
 }

@@ -36,12 +36,7 @@ internal sealed class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Log
 		{
 			ValidationFailure firstFailure = validationResult.Errors.First();
 
-			return Result.Failure<LoginResponse>(
-				Error.Validation(
-					firstFailure.ErrorCode,
-					firstFailure.ErrorMessage
-				)
-			);
+			return Result.Failure<LoginResponse>(Error.Validation(firstFailure.ErrorCode, firstFailure.ErrorMessage));
 		}
 
 		Result<Email> emailResult = Email.Create(request.Email);
