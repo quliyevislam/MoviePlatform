@@ -22,9 +22,9 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
 				table.HasCheckConstraint(
 					"CK_movies_average_rating_range",
-					$"average_rating = 0 OR "
-					+ "(average_rating >= {MovieConstants.ReviewScore.MinScore} AND "
-					+ "average_rating <= {MovieConstants.ReviewScore.MaxScore})"
+					$"average_rating = 0 OR"
+					+ " (average_rating >= {MovieConstants.ReviewScore.MinScore} AND"
+					+ " average_rating <= {MovieConstants.ReviewScore.MaxScore})"
 				);
 
 				table.HasCheckConstraint(
@@ -75,12 +75,14 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 		builder
 			.Property(movie => movie.AverageRating)
 			.HasColumnName("average_rating")
+			.IsRequired()
 			.HasPrecision(MovieConstants.ReviewScore.MaxDigitsPrecision, MovieConstants.ReviewScore.DecimalPlacesScale)
 			.HasConversion(averageRating => averageRating.Value, value => AverageRating.Create(value).Value);
 
 		builder
 			.Property(movie => movie.ReviewCount)
 			.HasColumnName("review_count")
+			.IsRequired()
 			.HasConversion(reviewCount => reviewCount.Value, value => ReviewCount.Create(value).Value);
 
 			ConfigureComments(builder);
@@ -120,8 +122,8 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
 				commentBuilder
 					.Property(comment => comment.MovieId)
-					.IsRequired()
-					.HasColumnName("movie_id");
+					.HasColumnName("movie_id")
+					.IsRequired();
 
 				commentBuilder
 					.WithOwner()
@@ -136,7 +138,8 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
 				commentBuilder
 					.Property(comment => comment.CreatedAtUtc)
-					.HasColumnName("created_at_utc");
+					.HasColumnName("created_at_utc")
+					.IsRequired();
 			}
 		);
 	}
@@ -153,7 +156,8 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 					{
 						table.HasCheckConstraint(
 							"CK_review_score_range",
-							$"score >= {MovieConstants.ReviewScore.MinScore} AND score <= {MovieConstants.ReviewScore.MaxScore}"
+							$"score >= {MovieConstants.ReviewScore.MinScore}"
+							+ $" AND score <= {MovieConstants.ReviewScore.MaxScore}"
 						);
 					}
 				);
@@ -179,8 +183,8 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
 				reviewBuilder
 					.Property(review => review.MovieId)
-					.IsRequired()
-					.HasColumnName("movie_id");
+					.HasColumnName("movie_id")
+					.IsRequired();
 
 				reviewBuilder
 					.WithOwner()
@@ -189,12 +193,14 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 				reviewBuilder
 					.Property(review => review.Score)
 					.HasColumnName("score")
+					.IsRequired()
 					.HasPrecision(MovieConstants.ReviewScore.MaxDigitsPrecision, MovieConstants.ReviewScore.DecimalPlacesScale)
 					.HasConversion(score => score.Value, value => ReviewScore.Create(value).Value);
 
 				reviewBuilder
 					.Property(review => review.CreatedAtUtc)
-					.HasColumnName("created_at_utc");
+					.HasColumnName("created_at_utc")
+					.IsRequired();
 			}
 		);
 	}

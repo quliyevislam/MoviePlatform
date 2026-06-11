@@ -46,18 +46,21 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 		builder
 			.Property(user => user.Name)
 			.HasColumnName("name")
+			.IsRequired()
 			.HasMaxLength(UserConstants.Name.MaxLength)
 			.HasConversion(name => name.Value, value => Name.Create(value).Value);
 
 		builder
 			.Property(user => user.Email)
 			.HasColumnName("email")
+			.IsRequired()
 			.HasMaxLength(UserConstants.Email.MaxLength)
 			.HasConversion(email => email.Value, value => Email.Create(value).Value);
 
 		builder
 			.Property(user => user.PasswordHash)
 			.HasColumnName("password_hash")
+			.IsRequired()
 			.HasConversion(passwordHash => passwordHash.Value, value => PasswordHash.Create(value).Value);
 	}
 }
