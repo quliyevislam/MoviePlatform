@@ -16,7 +16,6 @@ COPY --link ./ ./
 RUN --mount=type=cache,target=/root/.dotnet/tools/ \
 	dotnet tool install --global dotnet-ef --version 10.0.*
 ENV PATH="$PATH:/root/.dotnet/tools/"
-# ENV ConnectionStrings__DefaultConnection="Host=localhost;Database=dummy_db;Username=postgres;Password=postgres;"
 RUN	--mount=type=cache,target=/root/.nuget/packages/ \
 	dotnet restore ./MoviePlatform.slnx -a $TARGETARCH --locked-mode
 RUN --mount=type=cache,target=/root/.nuget/packages/ \
