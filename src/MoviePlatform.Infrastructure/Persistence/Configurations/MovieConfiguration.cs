@@ -22,9 +22,9 @@ internal sealed class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
 				table.HasCheckConstraint(
 					"CK_movies_average_rating_range",
-					$"average_rating = 0 OR"
-					+ " (average_rating >= {MovieConstants.ReviewScore.MinScore} AND"
-					+ " average_rating <= {MovieConstants.ReviewScore.MaxScore})"
+					"average_rating = 0 OR"
+					+ $" (average_rating >= {MovieConstants.ReviewScore.MinScore} AND"
+					+ $" average_rating <= {MovieConstants.ReviewScore.MaxScore})"
 				);
 
 				table.HasCheckConstraint(
