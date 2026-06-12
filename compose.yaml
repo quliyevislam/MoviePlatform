@@ -49,3 +49,7 @@ services:
     depends_on:
       db-migration:
         condition: service_completed_successfully
+    develop:
+      watch:
+        - action: rebuild
+          path: ./
