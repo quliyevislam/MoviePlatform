@@ -1,5 +1,7 @@
+name: movie-plarform;
+
 services:
-  movie-platform-db:
+  db:
     image: postgres:17
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
@@ -20,13 +22,13 @@ services:
     entrypoint: ["./efbundle"]
     environment:
       - >
-        ConnectionStrings__DefaultConnection=Host=movie-platform-db;
+        ConnectionStrings__DefaultConnection=Host=db;
         Port=5432;
         Database=${POSTGRES_DB};
         Username=${POSTGRES_USER};
         Password=${POSTGRES_PASSWORD};
     depends_on:
-      movie-platform-db:
+      db:
         condition: service_healthy
 
   api:
@@ -41,7 +43,7 @@ services:
       - JwtSettings__Audience=${JWT_AUDIENCE}
       - JWT_EXPIRY_MINUTE=${JWT_EXPIRY_MINUTE}
       - >
-        ConnectionStrings__DefaultConnection=Host=movie-platform-db;
+        ConnectionStrings__DefaultConnection=Host=db;
         Port=5432;
         Database=${POSTGRES_DB};
         Username=${POSTGRES_USER};
