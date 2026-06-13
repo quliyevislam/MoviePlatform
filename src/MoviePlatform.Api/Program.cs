@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using MoviePlatform.Application;
 using MoviePlatform.Infrastructure;
 
@@ -7,6 +8,8 @@ builder.Services.AddHealthChecks();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
+// Determines if the filter that returns an BadRequestObjectResult when ModelState is invalid
+builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
 var app = builder.Build();
 

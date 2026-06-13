@@ -10,7 +10,7 @@ public sealed class LoginQueryValidator : AbstractValidator<LoginQuery>
     {
 		ClassLevelCascadeMode = CascadeMode.Stop;
 
-		RuleFor(command => command.Email).ValidEmail();
+		RuleFor(query => query.Email).ValidEmail();
 		RuleFor(query => query.Password).ValidPassword();
 	}
 }
