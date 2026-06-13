@@ -20,7 +20,7 @@ public static class DependencyInjection
 		services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
         services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-		services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+		services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
         services.AddSingleton<IJwtProvider, JwtProvider>();
 		services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
 

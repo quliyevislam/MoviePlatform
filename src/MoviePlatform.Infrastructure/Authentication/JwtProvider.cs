@@ -26,7 +26,7 @@ public sealed class JwtProvider : IJwtProvider
 		};
 
 		SigningCredentials signingCredentials = new SigningCredentials(
-			new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
+			new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret)),
             SecurityAlgorithms.HmacSha256
 		);
 
@@ -35,7 +35,7 @@ public sealed class JwtProvider : IJwtProvider
 			_jwtOptions.Audience,
 			claims,
 			null,
-			DateTime.UtcNow.AddHours(1),
+			DateTime.UtcNow.AddMinutes(_jwtOptions.ExpiryMinutes),
 			signingCredentials
 		);
 
