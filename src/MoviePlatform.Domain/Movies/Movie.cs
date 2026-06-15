@@ -76,7 +76,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 		return Result.Success<Movie>(new(userIdResult.Value, titleResult.Value, descriptionResult.Value, genreResult.Value, releaseDateResult.Value));
 	}
 
-	public Result Update(string newTitle, string newDescription, Genre newGenre, DateOnly newReleaseDate, DateTime currentUtcTime)
+	public Result Update(string newTitle, string newDescription, string newGenre, DateOnly newReleaseDate, DateTime currentUtcTime)
 	{
 		Result<Title> newTitleResult = Title.Create(newTitle);
 
@@ -92,6 +92,13 @@ public sealed class Movie : AggregateRoot<MovieId>
 			return Result.Failure(newDescriptionResult.Error);
 		}
 
+		Result<Genre> newGenreResult = Genre.Create(newGenre);
+
+		if (newGenreResult.IsFailure)
+		{
+			return Result.Failure(newGenreResult.Error);
+		}
+
 		Result<ReleaseDate> newReleaseDateResult = ReleaseDate.Create(newReleaseDate, currentUtcTime);
 
 		if (newReleaseDateResult.IsFailure)
@@ -101,7 +108,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 
 		Title = newTitleResult.Value;
 		Description = newDescriptionResult.Value;
-		Genre = newGenre;
+		Genre = newGenreResult.Value;
 		ReleaseDate = newReleaseDateResult.Value;
 
 		return Result.Success();
