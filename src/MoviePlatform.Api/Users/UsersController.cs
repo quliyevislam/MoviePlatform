@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MoviePlatform.Domain.Common;
 using MoviePlatform.Application.Users.Commands.RegisterUser;
 using MoviePlatform.Application.Users.Queries.Login;
+using MoviePlatform.Api.Common;
 
 namespace MoviePlatform.Api.Controllers;
 

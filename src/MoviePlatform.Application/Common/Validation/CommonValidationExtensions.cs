@@ -121,10 +121,10 @@ public static class CommonValidationExtensions
             .WithMessage(MovieErrors.Genre.Invalid.Description);
 	}
 
-	public static IRuleBuilderOptions<T, DateOnly> ValidReleaseDate<T>(this IRuleBuilder<T, DateOnly> ruleBuilder, DateTimeOffset currentUtcTime)
+	public static IRuleBuilderOptions<T, DateOnly> ValidReleaseDate<T>(this IRuleBuilder<T, DateOnly> ruleBuilder, TimeProvider timeProvider)
 	{
 		return ruleBuilder
-			.LessThanOrEqualTo(DateOnly.FromDateTime(currentUtcTime.DateTime))
+			.LessThanOrEqualTo(DateOnly.FromDateTime(timeProvider.GetUtcNow().DateTime))
 			.WithErrorCode(MovieErrors.ReleaseDate.InFuture.Code)
             .WithMessage(MovieErrors.ReleaseDate.InFuture.Description);
 	}

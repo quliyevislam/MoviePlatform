@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoviePlatform.Domain.Common;
 
-namespace MoviePlatform.Api.Controllers;
+namespace MoviePlatform.Api.Common;
 
 [ApiController]
 [Route("api/[controller]")]
