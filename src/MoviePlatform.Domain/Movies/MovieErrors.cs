@@ -38,6 +38,14 @@ public static class MovieErrors
 		);
 	}
 
+	public static class Genre
+	{
+		public static readonly Error Invalid = Error.Validation(
+			"Movie.Genre.Invalid",
+			"The genre is not valid. Please check the /api/movies/genres endpoint for a full list of options."
+		);
+	}
+
 	public static class ReleaseDate
 	{
 		public static readonly Error InFuture = Error.Validation(

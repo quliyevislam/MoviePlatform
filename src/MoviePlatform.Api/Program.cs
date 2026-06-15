@@ -10,6 +10,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 // Determines if the filter that returns an BadRequestObjectResult when ModelState is invalid
 builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
+builder.Services.AddSingleton(TimeProvider.System);
 
 var app = builder.Build();
 

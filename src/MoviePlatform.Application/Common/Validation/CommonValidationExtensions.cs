@@ -1,5 +1,7 @@
 using FluentValidation;
 using MoviePlatform.Domain.Users;
+using MoviePlatform.Domain.Movies;
+using MoviePlatform.Domain.Movies.Enums;
 
 namespace MoviePlatform.Application.Common.Validation;
 
@@ -70,5 +72,55 @@ public static class CommonValidationExtensions
 			.MaximumLength(UserConstants.Name.MaxLength)
 			.WithErrorCode(UserErrors.Name.TooLong.Code)
             .WithMessage(UserErrors.Name.TooLong.Description);
+	}
+
+	public static IRuleBuilderOptions<T, int> ValidUserId<T>(this IRuleBuilder<T, int> ruleBuilder)
+	{
+		return ruleBuilder
+			.GreaterThan(0)
+			.WithErrorCode(UserErrors.UserId.Invalid.Code)
+            .WithMessage(UserErrors.UserId.Invalid.Description);
+	}
+
+
+	public static IRuleBuilderOptions<T, string> ValidTitle<T>(this IRuleBuilder<T, string> ruleBuilder)
+	{
+		return ruleBuilder
+			.NotNull()
+			.WithErrorCode(MovieErrors.Title.Required.Code)
+            .WithMessage(MovieErrors.Title.Required.Description)
+
+			.NotEmpty()
+			.WithErrorCode(MovieErrors.Title.Empty.Code)
+            .WithMessage(MovieErrors.Title.Empty.Description)
+
+			.MaximumLength(MovieConstants.Title.MaxLength)
+			.WithErrorCode(MovieErrors.Title.TooLong.Code)
+            .WithMessage(MovieErrors.Title.TooLong.Description);
+	}
+
+	public static IRuleBuilderOptions<T, string> ValidDescription<T>(this IRuleBuilder<T, string> ruleBuilder)
+	{
+		return ruleBuilder
+			.MaximumLength(MovieConstants.Description.MaxLength)
+			.WithErrorCode(MovieErrors.Description.TooLong.Code)
+            .WithMessage(MovieErrors.Description.TooLong.Description)
+			.When(description => description is not null);
+	}
+
+	public static IRuleBuilderOptions<T, Genre> ValidGenre<T>(this IRuleBuilder<T, Genre> ruleBuilder)
+	{
+		return ruleBuilder
+			.IsInEnum()
+			.WithErrorCode(MovieErrors.Genre.Invalid.Code)
+            .WithMessage(MovieErrors.Genre.Invalid.Description);
+	}
+
+	public static IRuleBuilderOptions<T, DateOnly> ValidReleaseDate<T>(this IRuleBuilder<T, DateOnly> ruleBuilder, DateTimeOffset currentUtcTime)
+	{
+		return ruleBuilder
+			.LessThanOrEqualTo(DateOnly.FromDateTime(currentUtcTime.DateTime))
+			.WithErrorCode(MovieErrors.ReleaseDate.InFuture.Code)
+            .WithMessage(MovieErrors.ReleaseDate.InFuture.Description);
 	}
 }

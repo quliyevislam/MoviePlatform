@@ -36,7 +36,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 		ReviewCount = ReviewCount.Create(0).Value;
 	}
 
-	public static Result<Movie> Create(int userId, string title, string description, Genre genre, DateOnly releaseDate, DateTime currentUtcTime)
+	public static Result<Movie> Create(int userId, string title, string description, Genre genre, DateOnly releaseDate, DateTimeOffset currentUtcTime)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
 

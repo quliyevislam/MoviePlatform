@@ -14,9 +14,9 @@ public readonly record struct ReleaseDate
 
 	private ReleaseDate(DateOnly value) => Value = value;
 
-	public static Result<ReleaseDate> Create(DateOnly value, DateTime currentUtcTime)
+	public static Result<ReleaseDate> Create(DateOnly value, DateTimeOffset currentUtcTime)
 	{
-		if (value > DateOnly.FromDateTime(currentUtcTime))
+		if (value > DateOnly.FromDateTime(currentUtcTime.DateTime))
 		{
 			return Result.Failure<ReleaseDate>(MovieErrors.ReleaseDate.InFuture);
 		}
