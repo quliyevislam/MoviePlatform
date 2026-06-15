@@ -36,7 +36,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 		ReviewCount = ReviewCount.Create(0).Value;
 	}
 
-	public static Result<Movie> Create(int userId, string title, string description, Genre genre, DateOnly releaseDate, DateTimeOffset currentUtcTime)
+	public static Result<Movie> Create(int userId, string title, string description, string genre, DateOnly releaseDate, DateTimeOffset currentUtcTime)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
 
@@ -59,6 +59,13 @@ public sealed class Movie : AggregateRoot<MovieId>
 			return Result.Failure<Movie>(descriptionResult.Error);
 		}
 
+		Result<Genre> genreResult = Genre.Create(genre);
+
+		if (genreResult.IsFailure)
+		{
+			return Result.Failure<Movie>(genreResult.Error);
+		}
+
 		Result<ReleaseDate> releaseDateResult = ReleaseDate.Create(releaseDate, currentUtcTime);
 
 		if (releaseDateResult.IsFailure)
@@ -66,7 +73,7 @@ public sealed class Movie : AggregateRoot<MovieId>
 			return Result.Failure<Movie>(releaseDateResult.Error);
 		}
 
-		return Result.Success<Movie>(new(userIdResult.Value, titleResult.Value, descriptionResult.Value, genre, releaseDateResult.Value));
+		return Result.Success<Movie>(new(userIdResult.Value, titleResult.Value, descriptionResult.Value, genreResult.Value, releaseDateResult.Value));
 	}
 
 	public Result Update(string newTitle, string newDescription, Genre newGenre, DateOnly newReleaseDate, DateTime currentUtcTime)

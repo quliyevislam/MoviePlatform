@@ -7,7 +7,8 @@ namespace MoviePlatform.Application.Common.Validation;
 
 public static class CommonValidationExtensions
 {
-	public static IRuleBuilderOptions<T, string> ValidPassword<T>(this IRuleBuilder<T, string> ruleBuilder) {
+	public static IRuleBuilderOptions<T, string> ValidPassword<T>(this IRuleBuilder<T, string> ruleBuilder)
+	{
 		return ruleBuilder
 			.NotNull()
 			.WithErrorCode(UserErrors.Password.Required.Code)
@@ -108,10 +109,14 @@ public static class CommonValidationExtensions
 			.When(description => description is not null);
 	}
 
-	public static IRuleBuilderOptions<T, Genre> ValidGenre<T>(this IRuleBuilder<T, Genre> ruleBuilder)
+	public static IRuleBuilderOptions<T, string> ValidGenre<T>(this IRuleBuilder<T, string> ruleBuilder)
 	{
 		return ruleBuilder
-			.IsInEnum()
+			.Must(
+				genre =>
+					string.IsNullOrWhiteSpace(genre)
+					|| (Enum.TryParse<GenreType>(genre, out var genreType) && Enum.IsDefined(typeof(GenreType), genreType))
+			)
 			.WithErrorCode(MovieErrors.Genre.Invalid.Code)
             .WithMessage(MovieErrors.Genre.Invalid.Description);
 	}

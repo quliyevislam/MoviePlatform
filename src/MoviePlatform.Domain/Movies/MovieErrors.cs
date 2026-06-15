@@ -44,6 +44,11 @@ public static class MovieErrors
 			"Movie.Genre.Invalid",
 			"The genre is not valid. Please check the /api/movies/genres endpoint for a full list of options."
 		);
+
+		public static readonly Error OutOfBounds = Error.Validation(
+			"Movie.Genre.OutOfBounds",
+			"The provided genre option is outside the allowed system boundaries."
+		);
 	}
 
 	public static class ReleaseDate
