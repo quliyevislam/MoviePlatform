@@ -40,7 +40,14 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
             return Result.Failure<int>(UserErrors.EmailAlreadyInUse);
         }
 
-        string passwordHash = _passwordHasher.Hash(request.Password);
+		Result<Password> passwordResult = Password.Create(request.Password);
+
+		if (passwordResult.IsFailure)
+		{
+			return Result.Failure<int>(passwordResult.Error);
+		}
+
+        string passwordHash = _passwordHasher.Hash(passwordResult.Value);
 
         Result<User> userResult = User.Create(request.Name, request.Email, passwordHash);
 

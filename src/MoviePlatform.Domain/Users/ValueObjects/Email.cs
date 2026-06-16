@@ -10,7 +10,7 @@ public readonly record struct Email
 
 	private Email(string value) => Value = value;
 
-	public static Result<Email> Create(string value)
+	public static Result<Email> Create(string? value)
 	{
 		if (value is null)
 		{

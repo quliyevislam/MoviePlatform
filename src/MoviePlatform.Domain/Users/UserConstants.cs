@@ -18,7 +18,7 @@ public static class UserConstants
 
 		public static readonly string RequireUppercase = @"[A-Z]";
 		public static readonly string RequireLowercase = @"[a-z]";
-		public static readonly string RequireDigit     = @"[0-9]";
+		public static readonly string RequireDigit = @"[0-9]";
 		public static readonly string RequireNoSpace  = @"^\S*$";
 	}
 }

@@ -9,7 +9,7 @@ public readonly record struct Name
 
 	private Name(string value) => Value = value;
 
-	public static Result<Name> Create(string value)
+	public static Result<Name> Create(string? value)
 	{
 		if (value is null)
 		{

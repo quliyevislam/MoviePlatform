@@ -18,7 +18,7 @@ public readonly record struct Genre
 		Value = value;
 	}
 
-	public static Result<Genre> Create(string value)
+	public static Result<Genre> Create(string? value)
 	{
 		if (string.IsNullOrWhiteSpace(value))
 		{

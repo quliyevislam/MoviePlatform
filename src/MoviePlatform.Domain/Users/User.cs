@@ -18,7 +18,7 @@ public sealed class User : AggregateRoot<UserId>
 		PasswordHash = passwordHash;
 	}
 
-	public static Result<User> Create(string name, string email, string passwordHash)
+	public static Result<User> Create(string? name, string? email, string? passwordHash)
 	{
 		Result<Name> nameResult = Name.Create(name);
 

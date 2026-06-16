@@ -9,7 +9,7 @@ public readonly record struct PasswordHash
 
 	private PasswordHash(string value) => Value = value;
 
-	public static Result<PasswordHash> Create(string value)
+	public static Result<PasswordHash> Create(string? value)
 	{
 		if (value is null)
 		{

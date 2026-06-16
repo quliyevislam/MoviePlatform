@@ -20,7 +20,7 @@ public sealed class Comment : BaseEntity<CommentId>
 		CreatedAtUtc = createdAtUtc;
 	}
 
-	public static Result<Comment> Create(int userId, string content)
+	public static Result<Comment> Create(int userId, string? content)
 	{
 		Result<UserId> userIdResult = UserId.Create(userId);
 

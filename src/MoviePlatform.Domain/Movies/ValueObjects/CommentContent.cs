@@ -14,7 +14,7 @@ public readonly record struct CommentContent
 
 	private CommentContent(string value) => Value = value;
 
-	public static Result<CommentContent> Create(string value)
+	public static Result<CommentContent> Create(string? value)
 	{
 			if (value is null)
 			{
