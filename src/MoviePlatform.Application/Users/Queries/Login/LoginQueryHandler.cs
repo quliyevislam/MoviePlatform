@@ -39,14 +39,7 @@ internal sealed class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Log
 			return Result.Failure<LoginResponse>(UserErrors.InvalidCredentials);
 		}
 
-		Result<Password> passwordResult = Password.Create(request.Password);
-
-		if (passwordResult.IsFailure)
-		{
-			return Result.Failure<LoginResponse>(passwordResult.Error);
-		}
-
-		bool isPasswordValid = _passwordHasher.Verify(passwordResult.Value, user.PasswordHash);
+		bool isPasswordValid = _passwordHasher.Verify(request.Password, user.PasswordHash);
 
 		if (!isPasswordValid)
 		{

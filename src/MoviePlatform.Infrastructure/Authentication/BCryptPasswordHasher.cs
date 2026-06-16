@@ -11,8 +11,8 @@ internal sealed class BCryptPasswordHasher : IPasswordHasher
         return BCryptNet.HashPassword(password.Value);
     }
 
-    public bool Verify(Password password, PasswordHash passwordHash)
+    public bool Verify(string? password, PasswordHash passwordHash)
     {
-        return BCryptNet.Verify(password.Value, passwordHash.Value);
+        return BCryptNet.Verify(password, passwordHash.Value);
     }
 }
