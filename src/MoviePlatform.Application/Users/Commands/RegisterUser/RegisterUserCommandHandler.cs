@@ -1,6 +1,4 @@
 using MediatR;
-using FluentValidation;
-using FluentValidation.Results;
 using MoviePlatform.Application.Common.Authentication;
 using MoviePlatform.Application.Common.Messaging;
 using MoviePlatform.Application.Common.Data;
@@ -15,31 +13,19 @@ internal sealed class RegisterUserCommandHandler : IRequestHandler<RegisterUserC
 	private readonly IUserRepository _userRepository;
     private readonly IPasswordHasher _passwordHasher;
     private readonly IUnitOfWork _unitOfWork;
-	private readonly IValidator<RegisterUserCommand> _validator;
 
 	public RegisterUserCommandHandler(
 		IUserRepository userRepository,
 		IPasswordHasher passwordHasher,
-		IUnitOfWork unitOfWork,
-		IValidator<RegisterUserCommand> validator)
+		IUnitOfWork unitOfWork)
     {
         _userRepository = userRepository;
         _passwordHasher = passwordHasher;
         _unitOfWork = unitOfWork;
-		_validator = validator;
 	}
 
 	public async Task<Result<int>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-		ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
-
-		if (!validationResult.IsValid)
-        {
-            ValidationFailure firstFailure = validationResult.Errors.First();
-
-            return Result.Failure<int>(Error.Validation(firstFailure.ErrorCode, firstFailure.ErrorMessage));
-        }
-
 		Result<Email> emailResult = Email.Create(request.Email);
 
 		if (emailResult.IsFailure)

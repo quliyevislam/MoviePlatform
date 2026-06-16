@@ -14,7 +14,7 @@ public readonly record struct Title
 
 	private Title(string value) => Value = value;
 
-	public static Result<Title> Create(string value)
+	public static Result<Title> Create(string? value)
 	{
 		if (value is null)
 		{

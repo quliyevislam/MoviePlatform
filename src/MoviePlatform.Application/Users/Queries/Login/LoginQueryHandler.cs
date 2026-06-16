@@ -1,6 +1,4 @@
 using MediatR;
-using FluentValidation;
-using FluentValidation.Results;
 using MoviePlatform.Application.Common.Authentication;
 using MoviePlatform.Application.Common.Messaging;
 using MoviePlatform.Domain.Common;
@@ -14,31 +12,19 @@ internal sealed class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Log
 	private readonly IUserRepository _userRepository;
 	private readonly IPasswordHasher _passwordHasher;
 	private readonly IJwtProvider _jwtProvider;
-	private readonly IValidator<LoginQuery> _validator;
 
 	public LoginQueryHandler(
 		IUserRepository userRepository,
 		IPasswordHasher passwordHasher,
-		IJwtProvider jwtProvider,
-		IValidator<LoginQuery> validator)
+		IJwtProvider jwtProvider)
 	{
 		_userRepository = userRepository;
 		_passwordHasher = passwordHasher;
 		_jwtProvider = jwtProvider;
-		_validator = validator;
 	}
 
 	public async Task<Result<LoginResponse>> Handle(LoginQuery request, CancellationToken cancellationToken)
 	{
-		ValidationResult validationResult = await _validator.ValidateAsync(request, cancellationToken);
-
-		if (!validationResult.IsValid)
-		{
-			ValidationFailure firstFailure = validationResult.Errors.First();
-
-			return Result.Failure<LoginResponse>(Error.Validation(firstFailure.ErrorCode, firstFailure.ErrorMessage));
-		}
-
 		Result<Email> emailResult = Email.Create(request.Email);
 
 		if (emailResult.IsFailure)
