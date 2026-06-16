@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,8 @@ public abstract class ApiController : ControllerBase
 	{
 		Sender = sender;
 	}
+
+	protected int GetUserId() => int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
 	protected IActionResult HandleFailure(Result result)
 	{

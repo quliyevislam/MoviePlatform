@@ -14,6 +14,8 @@ builder.Services.AddSingleton(TimeProvider.System);
 
 var app = builder.Build();
 
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapHealthChecks("/health");
 app.MapControllers();
 app.Run();

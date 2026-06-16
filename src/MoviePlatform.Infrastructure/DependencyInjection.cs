@@ -8,6 +8,9 @@ using MoviePlatform.Application.Common.Data;
 using MoviePlatform.Infrastructure.Authentication;
 using MoviePlatform.Infrastructure.Persistence;
 using MoviePlatform.Infrastructure.Persistence.Repositories;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
 
 namespace MoviePlatform.Infrastructure;
 
@@ -20,9 +23,33 @@ public static class DependencyInjection
 		services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
         services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-		services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
         services.AddSingleton<IJwtProvider, JwtProvider>();
 		services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+
+		var jwtConfiguration = configuration.GetSection("JwtSettings");
+		var jwtOptions = jwtConfiguration.Get<JwtOptions>()!;
+
+		services.Configure<JwtOptions>(jwtConfiguration);
+
+		services
+			.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+			.AddJwtBearer(
+				options =>
+				{
+					options.TokenValidationParameters = new TokenValidationParameters
+					{
+						ValidateIssuer = true,
+						ValidateAudience = true,
+						ValidateLifetime = true,
+						ValidateIssuerSigningKey = true,
+						ValidIssuer = jwtOptions.Issuer,
+						ValidAudience = jwtOptions.Audience,
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret))
+					};
+				}
+			);
+
+		services.AddAuthorization();
 
 		return services;
     }
